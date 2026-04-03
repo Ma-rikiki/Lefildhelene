@@ -70,9 +70,6 @@
     .card{padding:var(--space-8);border-radius:var(--radius-xl);background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));border:1px solid var(--border);box-shadow:var(--shadow)}
     .card h2{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-3)}
     .card p{color:var(--muted)}
-    .feature-list{display:grid;gap:var(--space-4);margin-top:var(--space-5)}
-    .feature{display:flex;gap:var(--space-4);align-items:flex-start;padding:var(--space-4);border-radius:var(--radius-lg);background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
-    .feature-mark{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:linear-gradient(135deg, rgba(109,224,214,.2), rgba(214,186,119,.15));color:var(--gold)}
     footer{padding:var(--space-8) 0 var(--space-12);color:var(--faint);font-size:var(--text-sm)}
     footer a{text-decoration:underline;text-decoration-style:dotted}
     @media (max-width: 920px){
@@ -102,13 +99,16 @@
         </svg>
         <div>
           <strong>Le Fil d'Hélène</strong>
+          <span>Mystères sous-marins</span>
         </div>
       </a>
       <nav class="nav-links" aria-label="Navigation principale">
         <a class="pill" href="#univers">Univers</a>
-        <a class="pill" href="joueur.html" target="_blank" rel="noopener noreferrer">lnd</a>
+        <a class="pill" href="joueur.html" target="_blank" rel="noopener noreferrer">Jouer</a>
         <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
         </button>
       </nav>
     </div>
@@ -116,8 +116,15 @@
 
   <main id="accueil">
     <section class="hero shell">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Dossier 01 · Le Fil d'Hélène</span>
+          <h1>Un jeu d'énigmes entre bureau de détective et abysses.</h1>
+          <p class="lead">
+            Vas-tu suivre le fil ? Résous chaque énigme pour remonter la piste à travers les profondeurs.
+          </p>
           <div class="actions">
-            <a class="primary-btn" href="joueur.html" target="_blank" rel="noopener noreferrer">Commence à jouer</a>
+            <a class="primary-btn" href="joueur.html" target="_blank" rel="noopener noreferrer">Commencer à jouer</a>
           </div>
         </div>
         <div class="scene" aria-hidden="true">
@@ -127,7 +134,7 @@
               <div class="clue-card">
                 <h2>Dossier en cours</h2>
                 <p>
-            Vas-tu suivre le fil?
+                  Une série de messages codés remonte le long du câble d'Hélène. À toi de décrypter chaque indice pour progresser.
                 </p>
               </div>
             </div>
@@ -139,23 +146,20 @@
     <section class="sections shell" id="univers">
       <div class="grid">
         <article class="card">
-          <div class="feature-list">
-            <div class="feature">
-            </div>
-            <div class="feature">
-              <div class="feature-mark">2</div>
-              <div><strong>LND</strong><p>.</p></div>
-            </div>
-            <div class="feature">
-            </div>
-          </div>
+          <h2>Comment ça marche&nbsp;?</h2>
+          <p>
+            Cette page est la porte d'entrée de ton enquête. Le bouton «&nbsp;Commencer à jouer&nbsp;» t'envoie vers la salle de jeu en ligne,
+            qui récupère automatiquement les énigmes depuis Firebase.
+          </p>
         </article>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell">© Le Fil d'Hélène · Une création exclusive de Marie qui n'a rien à faire de son vendredi soir</div>
+    <div class="shell">
+      © Le Fil d'Hélène · Une création exclusive de Marie qui n'a rien à faire de son vendredi soir
+    </div>
   </footer>
 
   <script>
@@ -172,3 +176,4 @@
   </script>
 </body>
 </html>
+          
