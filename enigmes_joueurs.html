@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu d'Énigmes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #333;
+            background: #fafafa;
+        }
+
+        button {
+            background: #000;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        button.secondary {
+            background: #6c757d;
+        }
+
+        button.secondary:hover {
+            background: #5a6268;
+        }
+
+        button.success {
+            background: #28a745;
+        }
+
+        button.success:hover {
+            background: #218838;
+        }
+
+        .game-enigma {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .game-enigma p {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .enigma-counter {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .game-input {
+            margin-bottom: 20px;
+        }
+
+        .game-input input {
+            font-size: 1.1em;
+            padding: 15px;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .attempts-info {
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .score-display {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .score-display p {
+            margin: 5px 0;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .end-screen {
+            text-align: center;
+        }
+
+        .end-screen h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .end-screen .score-display {
+            margin: 30px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                margin: 20px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🧩 Jeu d'Énigmes</h1>
+    </header>
+
+    <main>
+        <!-- ÉCRAN ACCUEIL -->
+        <div id="home" class="screen active">
+            <div class="card">
+                <h2>Bienvenue !</h2>
+                <div class="score-display">
+                    <p>Score</p>
+                    <div class="score-value" id="homeScore">0</div>
+                </div>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button onclick="startGame()" class="success" style="font-size: 1.1em; padding: 15px 40px;">🎮 Commencer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÉCRAN JEU EN COURS -->
+        <div id="gameplay" class="screen">
+            <div class="card">
+                <div style="text-align: right; margin-bottom: 20px;">
+                    <button onclick="quitGame()" class="secondary">Quitter</button>
+                </div>
+
+                <div class="score-display">
+                    <p>Score</p>
+                    <div class="score-value" id="gameScore">0</div>
+                </div>
+
+                <div class="attempts-info" id="attemptsInfo">Tentatives : 0</div>
+
+                <div id="gameMessage" class="message"></div>
+
+                <div class="game-enigma">
+                    <p id="currentEnigma"></p>
+                    <div class="enigma-counter">
+                        <span id="enigmaPosition">1</span> / <span id="enigmaTotal">1</span>
+                    </div>
+                </div>
+
+                <div class="game-input">
+                    <input type="text" id="gameAnswer" placeholder="Votre réponse..." onkeypress="if(event.key==='Enter') submitAnswer()">
+                </div>
+
+                <button id="submitBtn" onclick="submitAnswer()" style="width: 100%; font-size: 1.1em;">Vérifier</button>
+                <button id="nextBtn" onclick="nextEnigma()" style="width: 100%; display: none; font-size: 1.1em;">Énigme suivante</button>
+            </div>
+        </div>
+
+        <!-- ÉCRAN FIN -->
+        <div id="end" class="screen">
+            <div class="card end-screen">
+                <h2>🎉 Bravo !</h2>
+                <p>Vous avez résolu toutes les énigmes !</p>
+
+                <div class="score-display">
+                    <p>Score Final</p>
+                    <div class="score-value" id="finalScore">0</div>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="backHome()">Retour</button>
+                    <button onclick="startGame()" class="success">Rejouer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÉCRAN AUCUNE ÉNIGME -->
+        <div id="noEnigmas" class="screen">
+            <div class="card empty-state">
+                <h2>❌ Aucune énigme disponible</h2>
+                <div class="info-box">
+                    <strong>Comment jouer :</strong><br>
+                    L'administrateur doit créer des énigmes d'abord.<br>
+                    Vérifiez que vous êtes sur le même navigateur que l'admin.
+                </div>
+                <p style="margin-top: 20px;">
+                    <button onclick="location.reload()" class="secondary">🔄 Rafraîchir</button>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let enigmas = [];
+        let currentEnigmaIndex = 0;
+        let totalScore = 0;
+        let currentScore = 0;
+        let attempts = 0;
+        let answered = false;
+
+        function loadData() {
+            const saved = localStorage.getItem('enigmas');
+            if (saved) {
+                try {
+                    enigmas = JSON.parse(saved);
+                } catch (e) {
+                    enigmas = [];
+                }
+            }
+            const savedScore = localStorage.getItem('totalScore');
+            if (savedScore) {
+                totalScore = parseInt(savedScore);
+            }
+            updateHomeScore();
+        }
+
+        function saveData() {
+            localStorage.setItem('totalScore', totalScore.toString());
+        }
+
+        function updateHomeScore() {
+            document.getElementById('homeScore').textContent = totalScore;
+        }
+
+        function switchScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenName).classList.add('active');
+        }
+
+        function startGame() {
+            if (enigmas.length === 0) {
+                switchScreen('noEnigmas');
+                return;
+            }
+
+            currentEnigmaIndex = 0;
+            currentScore = 0;
+            attempts = 0;
+            answered = false;
+
+            loadEnigma();
+            switchScreen('gameplay');
+        }
+
+        function loadEnigma() {
+            const enigma = enigmas[currentEnigmaIndex];
+            document.getElementById('currentEnigma').textContent = enigma.text;
+            document.getElementById('enigmaPosition').textContent = currentEnigmaIndex + 1;
+            document.getElementById('enigmaTotal').textContent = enigmas.length;
+            document.getElementById('gameAnswer').value = '';
+            document.getElementById('gameAnswer').disabled = false;
+            document.getElementById('gameMessage').classList.remove('show');
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'none';
+            attempts = 0;
+            answered = false;
+            updateAttempts();
+            updateGameScore();
+        }
+
+        function updateAttempts() {
+            document.getElementById('attemptsInfo').textContent = `Tentatives : ${attempts}`;
+        }
+
+        function updateGameScore() {
+            document.getElementById('gameScore').textContent = currentScore;
+        }
+
+        function submitAnswer() {
+            if (answered) return;
+
+            const answer = document.getElementById('gameAnswer').value.trim().toLowerCase();
+            const correctAnswer = enigmas[currentEnigmaIndex].answer;
+            const messageDiv = document.getElementById('gameMessage');
+
+            attempts++;
+            updateAttempts();
+
+            if (answer === correctAnswer) {
+                const points = Math.max(10 - (attempts - 1), 1);
+                currentScore += points;
+                totalScore += points;
+                saveData();
+                updateGameScore();
+
+                messageDiv.textContent = `✓ Correct ! +${points} points`;
+                messageDiv.classList.add('show', 'success');
+                messageDiv.classList.remove('error');
+
+                document.getElementById('gameAnswer').disabled = true;
+                document.getElementById('submitBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'block';
+                answered = true;
+            } else {
+                messageDiv.textContent = `✗ Mauvaise réponse. Réessayez !`;
+                messageDiv.classList.add('show', 'error');
+                messageDiv.classList.remove('success');
+            }
+        }
+
+        function nextEnigma() {
+            currentEnigmaIndex++;
+            if (currentEnigmaIndex >= enigmas.length) {
+                document.getElementById('finalScore').textContent = currentScore;
+                switchScreen('end');
+            } else {
+                loadEnigma();
+            }
+        }
+
+        function quitGame() {
+            if (confirm('Quitter le jeu ?')) {
+                switchScreen('home');
+            }
+        }
+
+        function backHome() {
+            updateHomeScore();
+            switchScreen('home');
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
