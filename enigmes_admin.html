@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu d'Énigmes - Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: #dc3545;
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid #c82333;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: rgba(255,255,255,0.3);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            color: #dc3545;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #dc3545;
+            background: #fafafa;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            background: #dc3545;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #c82333;
+        }
+
+        button.secondary {
+            background: #6c757d;
+        }
+
+        button.secondary:hover {
+            background: #5a6268;
+        }
+
+        button.danger {
+            background: #721c24;
+        }
+
+        button.danger:hover {
+            background: #5a1419;
+        }
+
+        .enigma-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .enigma-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-left: 4px solid #dc3545;
+            border-radius: 4px;
+        }
+
+        .enigma-item h3 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .enigma-item p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .enigma-answer {
+            background: #ffe6e6;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            border-left: 3px solid #dc3545;
+        }
+
+        .enigma-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .enigma-actions button {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .stats {
+            background: #ffe6e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #dc3545;
+        }
+
+        .stats h3 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        .stats p {
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #bee5eb;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeeba;
+        }
+
+        .login-screen {
+            max-width: 400px;
+            margin: 100px auto;
+        }
+
+        .login-screen .card {
+            text-align: center;
+        }
+
+        .login-screen input {
+            margin-bottom: 20px;
+        }
+
+        .login-screen button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-buttons button {
+            flex: 1;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                margin: 20px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ÉCRAN DE CONNEXION -->
+    <div id="loginScreen" class="login-screen">
+        <div class="card">
+            <h1>🧩 Énigmes</h1>
+            <h2>Espace Admin</h2>
+            <input type="password" id="adminPassword" placeholder="Mot de passe admin" onkeypress="if(event.key==='Enter') adminLogin()">
+            <button onclick="adminLogin()">Se connecter</button>
+            <div class="warning" style="margin-top: 30px;">
+                ⚠️ Cet espace est réservé à l'administrateur
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION ADMIN -->
+    <div id="app" style="display: none;">
+        <header>
+            <h1>🧩 Énigmes <span class="admin-badge">ADMIN</span></h1>
+        </header>
+
+        <main>
+            <!-- ÉCRAN GESTION DES ÉNIGMES -->
+            <div id="manager" class="screen active">
+                <div class="card">
+                    <div class="nav-buttons">
+                        <button onclick="showManager()">📝 Créer</button>
+                        <button onclick="showShare()" class="secondary">📤 Partager</button>
+                        <button onclick="logout()" class="secondary">Déconnexion</button>
+                    </div>
+
+                    <h2>Créer une énigme</h2>
+                    <div>
+                        <label>Énigme :</label>
+                        <textarea id="newEnigmaText" placeholder="Écrivez votre énigme ici..."></textarea>
+
+                        <label>Réponse :</label>
+                        <input type="text" id="newEnigmaAnswer" placeholder="La bonne réponse...">
+
+                        <button onclick="addEnigma()" style="width: 100%;">➕ Ajouter l'énigme</button>
+                    </div>
+
+                    <h2 style="margin-top: 40px;">Vos énigmes (<span id="enigmaCount">0</span>)</h2>
+                    <div id="enigmaListContainer" class="enigma-list">
+                        <div class="empty-state">
+                            <p>Aucune énigme créée.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÉCRAN PARTAGE -->
+            <div id="share" class="screen">
+                <div class="card">
+                    <div class="nav-buttons">
+                        <button onclick="showManager()">📝 Créer</button>
+                        <button onclick="showShare()" class="secondary">📤 Partager</button>
+                        <button onclick="logout()" class="secondary">Déconnexion</button>
+                    </div>
+
+                    <h2>📤 Partager le jeu</h2>
+
+                    <div class="info-box">
+                        <strong>✓ Système sécurisé</strong><br>
+                        Les énigmes restent chez vous. Les joueurs ne peuvent pas les voir !
+                    </div>
+
+                    <div class="stats">
+                        <h3>📊 Résumé</h3>
+                        <p>Nombre d'énigmes créées : <strong id="statsCount">0</strong></p>
+                        <p>Statut : <strong id="statusText">Prêt à partager</strong></p>
+                    </div>
+
+                    <h2 style="margin-top: 30px;">Instructions</h2>
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; line-height: 1.8;">
+                        <p><strong>1️⃣ Pour vos joueurs :</strong></p>
+                        <p style="margin: 10px 0; font-size: 0.9em;">
+                            Donnez-leur le fichier <code>enigmes_joueurs.html</code>
+                        </p>
+
+                        <p style="margin-top: 20px;"><strong>2️⃣ Important :</strong></p>
+                        <p style="margin: 10px 0;">
+                            ✓ Les joueurs NE verront que le jeu<br>
+                            ✓ Les énigmes restent confidentielles<br>
+                            ✓ Pas de mot de passe<br>
+                            ✓ Pas d'accès aux données
+                        </p>
+
+                        <p style="margin-top: 20px;"><strong>3️⃣ Avant de partager :</strong></p>
+                        <p style="margin: 10px 0;">
+                            Assurez-vous que vous et vos joueurs utilisez le MÊME navigateur web (Chrome, Firefox, etc.)<br>
+                            Les scores se sauvegardent localement
+                        </p>
+                    </div>
+
+                    <div class="warning" style="margin-top: 30px;">
+                        ⚠️ Vos énigmes sont sécurisées et ne sont jamais partagées avec les joueurs
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let enigmas = [];
+        const ADMIN_PASSWORD = 'admin123';
+
+        function loadData() {
+            const saved = localStorage.getItem('enigmas');
+            if (saved) {
+                try {
+                    enigmas = JSON.parse(saved);
+                } catch (e) {
+                    enigmas = [];
+                }
+            }
+            updateEnigmaList();
+        }
+
+        function saveData() {
+            localStorage.setItem('enigmas', JSON.stringify(enigmas));
+        }
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== ADMIN_PASSWORD) {
+                alert('❌ Mot de passe incorrect !');
+                return;
+            }
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('adminPassword').value = '';
+            loadData();
+        }
+
+        function logout() {
+            if (confirm('Êtes-vous sûr ?')) {
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('app').style.display = 'none';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        function showManager() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('manager').classList.add('active');
+        }
+
+        function showShare() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('share').classList.add('active');
+            document.getElementById('statsCount').textContent = enigmas.length;
+            const status = enigmas.length > 0 ? '✓ Prêt !' : '⚠️ Créez une énigme d\'abord';
+            document.getElementById('statusText').textContent = status;
+        }
+
+        function addEnigma() {
+            const text = document.getElementById('newEnigmaText').value.trim();
+            const answer = document.getElementById('newEnigmaAnswer').value.trim();
+
+            if (!text || !answer) {
+                alert('❌ Remplissez les deux champs !');
+                return;
+            }
+
+            enigmas.push({
+                id: Date.now(),
+                text: text,
+                answer: answer.toLowerCase()
+            });
+
+            saveData();
+            document.getElementById('newEnigmaText').value = '';
+            document.getElementById('newEnigmaAnswer').value = '';
+            updateEnigmaList();
+            alert('✓ Énigme ajoutée !');
+        }
+
+        function updateEnigmaList() {
+            const container = document.getElementById('enigmaListContainer');
+            const count = document.getElementById('enigmaCount');
+
+            count.textContent = enigmas.length;
+
+            if (enigmas.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>Aucune énigme créée.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = enigmas.map((e, index) => `
+                <div class="enigma-item">
+                    <h3>Énigme ${index + 1}</h3>
+                    <p>${e.text}</p>
+                    <div class="enigma-answer">Réponse : <strong>${e.answer}</strong></div>
+                    <div class="enigma-actions">
+                        <button class="danger" onclick="deleteEnigma(${e.id})">🗑️ Supprimer</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteEnigma(id) {
+            if (confirm('Supprimer cette énigme ?')) {
+                enigmas = enigmas.filter(e => e.id !== id);
+                saveData();
+                updateEnigmaList();
+                alert('✓ Énigme supprimée !');
+            }
+        }
+    </script>
+</body>
+</html>
