@@ -317,6 +317,10 @@
 
     <script>
         //
+        <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+
         const firebaseConfig = {
              apiKey: "AIzaSyCoeIHX3hT-imn031h40BZdCEFfrp8r_es",
   authDomain: "le-fil-d-helene.firebaseapp.com",
