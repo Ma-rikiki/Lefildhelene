@@ -8,108 +8,79 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root,[data-theme="light"]{
-      --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
-      --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
-      --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
-      --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
-      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
-      --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
-      --space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
-      --radius-md:.75rem;--radius-lg:1.25rem;--radius-xl:1.75rem;--radius-full:9999px;
-      --font-display:'Cormorant Garamond', Georgia, serif;
-      --font-body:'Manrope', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --bg:#071a26;--surface:#0d2433;--surface-2:#123145;--border:rgba(185,228,255,.18);
-      --text:#e8f6ff;--muted:#a8cad9;--faint:#7e9cac;--primary:#6de0d6;--gold:#d9bb72;
-      --shadow:0 18px 50px rgba(0,0,0,.42);
+    :root {
+      --bg: #05131d;
+      --surface: #0a1f2d;
+      --surface-2: #102a3b;
+      --border: rgba(173,223,247,.16);
+      --text: #e8f6ff;
+      --muted: #a8cad9;
+      --faint: #7e9cac;
+      --primary: #6de0d6;
+      --gold: #d9bb72;
+      --display: 'Cormorant Garamond', Georgia, serif;
+      --body: 'Manrope', system-ui, sans-serif;
     }
-    [data-theme="dark"]{
-      --bg:#05131d;--surface:#0a1f2d;--surface-2:#102a3b;--border:rgba(173,223,247,.13);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: var(--body);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text);
+      background: radial-gradient(circle at 15% 20%, rgba(116,221,213,.14), transparent 26%), radial-gradient(circle at 80% 0%, rgba(214,186,119,.12), transparent 24%), linear-gradient(180deg, #082131 0%, var(--bg) 45%, #041019 100%);
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;background:
-      radial-gradient(circle at 15% 20%, rgba(116,221,213,.14), transparent 26%),
-      radial-gradient(circle at 80% 0%, rgba(214,186,119,.12), transparent 24%),
-      linear-gradient(180deg, #082131 0%, var(--bg) 40%, #041019 100%);
-      color:var(--text);overflow-x:hidden}
-    a{color:inherit;text-decoration:none}
-    button{font:inherit;border:none;background:none;color:inherit;cursor:pointer}
-    .shell{width:min(1180px,calc(100% - 2rem));margin-inline:auto}
-    header{position:sticky;top:0;z-index:20;background:rgba(5,19,29,.8);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) 0}
-    .brand{display:flex;align-items:center;gap:var(--space-3)}
-    .logo{width:46px;height:46px;padding:.55rem;border-radius:50%;background:linear-gradient(145deg, rgba(109,224,214,.18), rgba(217,187,114,.08));border:1px solid var(--border);box-shadow:var(--shadow)}
-    .brand strong{display:block;font-size:var(--text-lg);font-family:var(--font-display);letter-spacing:.02em}
-    .brand span{display:block;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}
-    .nav-links{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
-    .pill,.cta{border-radius:var(--radius-full);padding:.75rem 1.1rem;border:1px solid var(--border);font-size:var(--text-sm)}
-    .pill{background:rgba(255,255,255,.04)}
-    .cta{background:linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--gold) 44%, var(--primary)));color:#04212d;font-weight:800}
-    .theme-toggle{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;background:rgba(255,255,255,.04)}
-    .hero{padding:clamp(4rem,8vw,7rem) 0 var(--space-16);position:relative}
-    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-10);align-items:center}
-    .eyebrow{display:inline-flex;gap:.6rem;align-items:center;padding:.45rem .9rem;border-radius:var(--radius-full);background:rgba(7,41,57,.55);border:1px solid var(--border);color:var(--muted);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.2em}
-    h1{font-family:var(--font-display);font-size:var(--text-2xl);line-height:.98;max-width:12ch;margin-top:var(--space-5);text-shadow:0 8px 24px rgba(0,0,0,.28)}
-    .lead{max-width:58ch;margin-top:var(--space-5);color:var(--muted)}
-    .actions{display:flex;gap:var(--space-3);flex-wrap:wrap;margin-top:var(--space-6)}
-    .primary-btn,.secondary-btn{padding:1rem 1.35rem;border-radius:var(--radius-full);font-weight:800;border:1px solid var(--border);font-size:var(--text-sm)}
-    .primary-btn{background:linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--gold) 44%, var(--primary)));color:#04212d;box-shadow:0 12px 28px rgba(109,224,214,.22)}
-    .secondary-btn{background:rgba(255,255,255,.04)}
-    .scene{position:relative;min-height:420px}
-    .panel{position:absolute;inset:auto 0 0 auto;width:min(100%,420px);border-radius:30px;background:linear-gradient(180deg, rgba(15,41,57,.9), rgba(7,22,31,.96));border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
-    .window{aspect-ratio:4/5;padding:var(--space-6);display:flex;flex-direction:column;justify-content:space-between;position:relative}
-    .porthole{width:160px;height:160px;border-radius:50%;border:10px solid rgba(214,186,119,.55);box-shadow:inset 0 0 0 8px rgba(6,20,29,.88),0 0 0 1px rgba(255,255,255,.05);background:
-      radial-gradient(circle at 50% 40%, rgba(119,222,213,.38), transparent 35%),
-      linear-gradient(180deg, #103249 0%, #0a2535 55%, #08151d 100%);
-      position:relative;overflow:hidden}
-    .clue-card{align-self:flex-end;max-width:260px;padding:var(--space-5);border-radius:var(--radius-lg);background:rgba(7,19,27,.8);border:1px solid var(--border);backdrop-filter:blur(8px)}
-    .clue-card h2{font-size:var(--text-lg);font-family:var(--font-display);margin-bottom:.35rem}
-    .clue-card p{color:var(--muted);font-size:var(--text-sm)}
-    .sections{padding-bottom:var(--space-16)}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-8);margin-top:var(--space-12)}
-    .card{padding:var(--space-8);border-radius:var(--radius-xl);background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));border:1px solid var(--border);box-shadow:var(--shadow)}
-    .card h2{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-3)}
-    .card p{color:var(--muted)}
-    footer{padding:var(--space-8) 0 var(--space-12);color:var(--faint);font-size:var(--text-sm)}
-    footer a{text-decoration:underline;text-decoration-style:dotted}
-    @media (max-width: 920px){
-      .hero-grid,.grid{grid-template-columns:1fr}
-      .scene{min-height:380px}
-      h1{max-width:14ch}
-    }
-    @media (max-width: 640px){
-      .nav{align-items:flex-start;flex-direction:column}
-      .nav-links{width:100%}
-      .nav-links a,.nav-links button{flex:1 1 auto;text-align:center}
-      .hero{padding-top:var(--space-10)}
-      .card{padding:var(--space-6)}
-    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .shell { width: min(1180px, calc(100% - 2rem)); margin-inline: auto; }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(5,19,29,.86); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; }
+    .brand { display: flex; align-items: center; gap: .75rem; }
+    .logo { width: 46px; height: 46px; padding: .55rem; border-radius: 50%; border: 1px solid var(--border); color: var(--primary); background: rgba(109,224,214,.08); }
+    .brand strong { display: block; font: 700 1.5rem var(--display); }
+    .brand span { display: block; color: var(--muted); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+    .nav-links, .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+    .pill, .primary-btn, .secondary-btn { display: inline-flex; align-items: center; justify-content: center; padding: .8rem 1.15rem; border: 1px solid var(--border); border-radius: 999px; font-size: .9rem; font-weight: 700; }
+    .pill, .secondary-btn { background: rgba(255,255,255,.04); }
+    .primary-btn { color: #04212d; background: linear-gradient(90deg, var(--primary), var(--gold)); border-color: transparent; }
+    .theme-toggle { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 50%; background: rgba(255,255,255,.04); }
+    .hero { padding: clamp(4rem, 8vw, 7rem) 0 4rem; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
+    .eyebrow { display: inline-flex; padding: .45rem .9rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { max-width: 12ch; margin-top: 1.25rem; font: 700 clamp(3rem, 1.5rem + 4vw, 5.5rem)/.95 var(--display); }
+    .lead { max-width: 58ch; margin-top: 1.25rem; color: var(--muted); }
+    .actions { margin-top: 1.5rem; }
+    .scene { min-height: 390px; display: grid; place-items: center; }
+    .panel { width: min(100%, 420px); padding: 2rem; border: 1px solid var(--border); border-radius: 30px; background: linear-gradient(180deg, rgba(15,41,57,.9), rgba(7,22,31,.96)); box-shadow: 0 18px 50px rgba(0,0,0,.42); }
+    .porthole { width: 160px; height: 160px; margin-bottom: 2rem; border: 10px solid rgba(214,186,119,.55); border-radius: 50%; background: radial-gradient(circle at 50% 40%, rgba(119,222,213,.38), transparent 35%), linear-gradient(180deg, #103249, #08151d); }
+    .clue-card { padding: 1.25rem; border: 1px solid var(--border); border-radius: 1.25rem; background: rgba(7,19,27,.8); }
+    .clue-card h2, .card h2 { font: 700 2rem var(--display); margin-bottom: .4rem; }
+    .clue-card p, .card p { color: var(--muted); }
+    .sections { padding-bottom: 4rem; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    .card { min-height: 220px; padding: 2rem; border: 1px solid var(--border); border-radius: 1.5rem; background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025)); box-shadow: 0 18px 50px rgba(0,0,0,.25); }
+    .card .actions { margin-top: 1.5rem; }
+    .dossier-number { color: var(--primary); font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    footer { padding: 2rem 0 3rem; color: var(--faint); font-size: .9rem; }
+    @media (max-width: 920px) { .hero-grid, .grid { grid-template-columns: 1fr; } .scene { min-height: 300px; } }
+    @media (max-width: 640px) { .nav { align-items: flex-start; flex-direction: column; } .nav-links { width: 100%; } .nav-links a, .nav-links button { flex: 1 1 auto; text-align: center; } }
   </style>
 </head>
 <body>
   <header>
     <div class="shell nav">
-      <a class="brand" href="#accueil">
+      <a class="brand" href="#accueil" aria-label="Retour à l'accueil">
         <svg class="logo" viewBox="0 0 64 64" aria-hidden="true" fill="none">
           <circle cx="32" cy="32" r="24" stroke="currentColor" stroke-width="2.5" opacity=".85"/>
-          <path d="M27 27c3-6 12-6 15 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M23 34h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M27 37c2 6 8 7 12 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M27 27c3-6 12-6 15 0M23 34h18M27 37c2 6 8 7 12 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
           <circle cx="47" cy="18" r="5" fill="currentColor" opacity=".2"/>
         </svg>
-        <div>
-          <strong>Le Fil d'Hélène</strong>
-          <span>encore une histoire de poisson d'avril qui dérape</span>
-        </div>
+        <div><strong>Le Fil d'Hélène</strong><span>encore une histoire de poisson d'avril qui dérape</span></div>
       </a>
       <nav class="nav-links" aria-label="Navigation principale">
-        <a class="pill" href="#univers">Univers</a>
+        <a class="pill" href="#dossiers">Dossiers</a>
         <a class="pill" href="joueur.html" target="_blank" rel="noopener noreferrer">Jouer</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème">◐</button>
       </nav>
     </div>
   </header>
@@ -118,57 +89,43 @@
     <section class="hero shell">
       <div class="hero-grid">
         <div>
-          <span class="eyebrow">Dossier 01 · Le Fil d'Hélène</span>
-          <p class="lead">
-            Vas-tu suivre le fil ? Résous chaque énigme et trouve l'anguille sous roche
-          </p>
-          <div class="actions">
-            <a class="primary-btn" href="joueur.html" target="_blank" rel="noopener noreferrer">Commencer à jouer</a>
-          </div>
+          <span class="eyebrow">Enquête interactive · Le Fil d'Hélène</span>
+          <h1>Vas-tu suivre le fil&nbsp;?</h1>
+          <p class="lead">Résous chaque énigme et trouve l'anguille sous roche. Deux dossiers, deux aventures, une seule mission.</p>
+          <div class="actions"><a class="primary-btn" href="joueur.html" target="_blank" rel="noopener noreferrer">Commencer à jouer</a></div>
         </div>
         <div class="scene" aria-hidden="true">
-          <div class="panel">
-            <div class="window">
-              <div class="porthole"></div>
-              <div class="clue-card">
-                <h2>Dossier en cours</h2>
-                <p>
-                  "[…] Il est des portes sur la mer que l'on ouvre avec des mots."
-Rafael Alberti — Sobre los ángeles, El ángel de las bodegas
-                </p>
-              </div>
-            </div>
-          </div>
+          <div class="panel"><div class="porthole"></div><div class="clue-card"><h2>Dossier en cours</h2><p>« Il est des portes sur la mer que l'on ouvre avec des mots. »<br>— Rafael Alberti</p></div></div>
         </div>
       </div>
     </section>
 
-    <section class="sections shell" id="univers">
+    <section class="sections shell" id="dossiers">
       <div class="grid">
         <article class="card">
-          <h2>Comment ça marche&nbsp;?</h2>
-          <p>
-            Bon, Hélène,  ça marche et c'est déjà pas mal ! Le bouton «&nbsp;Commencer à jouer&nbsp;» t'envoie vers la salle de jeu en ligne,
-            
-          </p>
+          <div class="dossier-number">Dossier 01 · Le Fil d'Hélène</div>
+          <h2>Le fil sous la mer</h2>
+          <p>Résous les énigmes existantes et avance dans l'enquête principale.</p>
+          <div class="actions"><a class="primary-btn" href="joueur.html" target="_blank" rel="noopener noreferrer">Ouvrir le dossier 1</a></div>
+        </article>
+        <article class="card">
+          <div class="dossier-number">Dossier 02 · Nouveau jeu</div>
+          <h2>Crée ta propre énigme</h2>
+          <p>Imagine une nouvelle aventure, ajoute tes énigmes et teste ton jeu directement dans le navigateur.</p>
+          <div class="actions"><a class="primary-btn" href="creer-jeu.html">Ouvrir le dossier 2</a></div>
         </article>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="shell">
-      © Le Fil d'Hélène · Une création exclusive de Marie qui n'a rien à faire de son vendredi soir
-    </div>
-  </footer>
+  <footer><div class="shell">© Le Fil d'Hélène · Une création exclusive de Marie</div></footer>
 
   <script>
-    (function(){
+    (() => {
       const root = document.documentElement;
-      const btn = document.getElementById('themeToggle');
+      const button = document.getElementById('themeToggle');
       let theme = 'dark';
-      root.setAttribute('data-theme', theme);
-      btn.addEventListener('click', () => {
+      button.addEventListener('click', () => {
         theme = theme === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', theme);
       });
@@ -176,4 +133,3 @@ Rafael Alberti — Sobre los ángeles, El ángel de las bodegas
   </script>
 </body>
 </html>
-          
