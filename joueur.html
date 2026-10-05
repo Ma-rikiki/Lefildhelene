@@ -32,7 +32,7 @@
     .status.err{color:#ff9b8a}
     .enonce{font-size:var(--text-lg);margin-bottom:var(--space-4)}
     input[type="text"]{width:100%;padding:.85rem 1rem;border-radius:var(--radius-md);border:1px solid var(--border);background:rgba(4,15,23,.96);color:var(--text);font:inherit;margin-bottom:var(--space-4)}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:.9rem 1.4rem;border-radius:var(--radius-full);border:1px solid var(--border);font-size:var(--text-sm);font-weight:600;cursor:pointer}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:.9rem 1.4rem;border-radius:var(--radius-full);border:1px solid var(--border);font-size:var(--text-sm);font-weight:600;transition:all .3s ease}
     .btn-primary{background:linear-gradient(90deg,var(--accent),#d9bb72);color:#041019}
     .btn-ghost{background:transparent}
     .feedback{min-height:2rem;font-size:var(--text-sm);margin-top:.25rem}
@@ -43,7 +43,7 @@
   <header>
     <div class="shell top">
       <div>
-        <h1>Le Fil d'Hélène · Joueur</h1>
+        <h1 id="gameTitle">Le Fil d'Hélène · Joueur</h1>
         <p class="status" id="status">Chargement des énigmes…</p>
       </div>
       <a class="btn btn-ghost" href="index.html">⬅ Accueil</a>
@@ -78,9 +78,18 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    // ⚠️ même URL que dans admin.html
     const db = getDatabase(app, "https://le-fil-d-helene-default-rtdb.europe-west1.firebasedatabase.app");
 
+    // Récupérer le paramètre game depuis l'URL
+    const params = new URLSearchParams(window.location.search);
+    const gameNum = params.get('game') || '1';
+    const gameKey = `enigmas/game${gameNum}`;
+    
+    const gameTitles = {
+      '1': 'Le Fil d\'Hélène · Joueur',
+      '2': 'The Forty World · Joueur'
+    };
+    
     const statusEl = document.getElementById('status');
     const enonceEl = document.getElementById('enonce');
     const reponseEl = document.getElementById('reponse');
@@ -90,6 +99,10 @@
     const posEl = document.getElementById('position');
     const totalEl = document.getElementById('total');
     const scoreEl = document.getElementById('score');
+    const gameTitleEl = document.getElementById('gameTitle');
+
+    // Mettre à jour le titre
+    gameTitleEl.textContent = gameTitles[gameNum];
 
     let enigmes = [];
     let index = 0;
@@ -122,7 +135,7 @@
     }
 
     try {
-      const enigmasRef = ref(db, 'enigmas');
+      const enigmasRef = ref(db, gameKey);
       onValue(enigmasRef, (snapshot) => {
         const data = snapshot.val() || {};
         enigmes = Object.values(data);
